@@ -38,6 +38,18 @@ Game.prototype.render = function() {
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgb(0,0,0)";
     
+    // TODO: add state for moving entity
+    
+    for (var i = 0; i < grid.length; i++) {
+        for (var j = 0; j < grid[0].length; j++) {
+            var ent = grid[i][j];
+            if (ent != null) {
+                // TODO: base on level
+                this.ctx.fillStyle = 
+            }
+        }
+    }
+    
     // TODO: animate borders
     
     for (var i = 1; i < this.rows; i++) {
@@ -45,7 +57,7 @@ Game.prototype.render = function() {
         this.ctx.fillRect(0, y, this.width, this.border);
     }
     
-    for (var i = 0; i < this.cols; i++) {
+    for (var i = 1; i < this.cols; i++) {
         var x = (this.width / this.cols) * i - this.border / 2;
         this.ctx.fillRect(x, 0, this.border, this.height);
     }
