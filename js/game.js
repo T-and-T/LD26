@@ -91,16 +91,16 @@ Game.prototype.render = function() {
 
                     switch (ent.moving) {
                         case 0: // north
-                            y -= ent.timeMoved / ent.time * h;
+                            y -= scaled_sin(ent.timeMoved / ent.time) * h;
                             break;
                         case 1: // east
-                            x += ent.timeMoved / ent.time * w;
+                            x += scaled_sin(ent.timeMoved / ent.time) * w;
                             break;
                         case 2: // south
-                            y += ent.timeMoved / ent.time * h;
+                            y += scaled_sin(ent.timeMoved / ent.time) * h;
                             break;
                         case 3: // west
-                            x -= ent.timeMoved / ent.time * w;
+                            x -= scaled_sin(ent.timeMoved / ent.time) * w;
                             break;
                     }
 
@@ -207,8 +207,7 @@ Game.prototype.moveEntity = function(entity, direction) {
                 return this.collide(entity, this.grid[loc.y][loc.x], loc);
             }
         } else if (entity.canFallOff) {
-            this.grid[entity.location.y][entity.location.x] = null;
-            this.entities.splice(this.entities.indexOf(entity));
+            this.removeEntity(entity);
         } else {
             return false;
         }
@@ -217,4 +216,7 @@ Game.prototype.moveEntity = function(entity, direction) {
     }
 }
 
-Game.prototype.removeEntity = function(entity) {}
+Game.prototype.removeEntity = function(entity) {
+    this.grid[entity.location.y][entity.location.x] = null;
+    this.entities.splice(this.entities.indexOf(entity));
+}
