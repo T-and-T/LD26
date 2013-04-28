@@ -46,7 +46,16 @@ function Game(id, width, height, rows, cols) {
 
 Game.prototype.update = function() {
     for (var i = 0; i < this.entities.length; i++) {
-        this.entities[i].update();
+        var ent = this.entities[i];
+        if (ent.moving == -1) {
+            ent.update();
+        } else if (ent.timeMoved < ent.time) {
+            ent.timeMoved++;
+        } else {
+            this.moveEntity(ent, ent.moving);
+            ent.moving = -1;
+            ent.timeMoved = 0;
+        }
     }
 
     for (var i = 0; i < this.updateHandlers.length; i++) {
