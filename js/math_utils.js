@@ -20,7 +20,6 @@ function bin1_2(n){
     var r = 0;
     while (i > 0 && j <= n-1) {
 	r++;
-	console.log(choose(n-1,j));
 	i -= choose(n-1, j);
 	j++;
     }
