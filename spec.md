@@ -40,7 +40,7 @@ The `Entity` interface provides a general interface that all entities should imp
   * `game` - the game that the entity belongs to
   * `time` - the number of iterations of the game loop that it takes to move the entity. I'm not sure if this is necessary, it really depends on what we want the speed of an entity to be determined by.
   * `location` - an object containing the x and y coordinates of the entity's location on the game grid; use this as a read only variable, as changing this manually will simply confuse the game engine into oblivion rather than move the entity
-  * `moving` - true when the entity is in an animated motion from one cell to another, false otherwise
+  * `moving` - the direction that the entity is moving, -1 if the entity is not moving
   * `timeMoved` - the number of iterations since the entity started moving
 
 ### Public Methods
