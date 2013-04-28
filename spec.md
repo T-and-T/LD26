@@ -10,6 +10,8 @@ The game class is the primary backbone of the game; it takes care of everything 
 
   * `rows` - the number of rows in the grid
   * `cols` - the number of columns in the grid
+  * `width` - the width of the video display
+  * `height` - the height of the video display
   * `score` - the player's current score
 
 ### Public Methods
