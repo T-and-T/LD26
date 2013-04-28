@@ -3,7 +3,7 @@ function Game(id, width, height, rows, cols) {
     this.canvas = document.createElement("canvas");
     this.canvas.width = this.width = width;
     this.canvas.height = this.height = height;
-    placeholder.parentNode.replaceChild(canvas, placeholder);
+    placeholder.parentNode.replaceChild(this.canvas, placeholder);
     this.ctx = this.canvas.getContext("2d");
     this.rows = rows;
     this.cols = cols;
