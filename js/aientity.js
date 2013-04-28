@@ -1,5 +1,4 @@
-function AIEntity(game, level, direction) {
-    this.game = game;
+function AIEntity(level, direction) {
     this.timer = 0;
     this.level = level;
     this.time = level * 100;
