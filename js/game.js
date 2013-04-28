@@ -11,7 +11,7 @@ function Game(id, width, height, rows, cols) {
     this.score = 0;
 
     this.updateHandlers = [];
-    this.collisionHandlers = [];
+    this.collide = function(){};
 
     // variable to hold the "thread"
     this.interval = null;
@@ -128,12 +128,12 @@ Game.prototype.onUpdate = function(callback) {
 }
 
 Game.prototype.onCollide = function(callback) {
-    this.updateHandlers.push(callback);
+    this.collide = callback;
 }
 
 Game.prototype.addEntity = function(entity, location) {
-    if (this.grid[location.x][location.y] == null) {
-        this.grid[location.x][location.y] = entity;
+    if (this.grid[location.y][location.x] == null) {
+        this.grid[location.y][location.x] = entity;
         entity.location = {x: location.x, y: location.y};
         entity.game = this;
 
@@ -144,6 +144,41 @@ Game.prototype.addEntity = function(entity, location) {
     }
 }
 
-Game.prototype.moveEntity = function(entity, direction, speed) {}
+Game.prototype.validLocation = function(location) {
+    return location.x >= 0 && location.x < this.cols && location.y >= 0 && location.y < this.rows;
+}
+
+Game.prototype.moveEntity = function(entity, direction) {
+    if (this.entities.indexOf(entity) > -1) {
+        var loc = {x: entity.location.x, y: entity.location.y};
+        switch (direction) {
+            case 0: // north
+                loc.y--;
+                break;
+            case 1: // east
+                loc.x++;
+                break;
+            case 2: // south
+                loc.y++;
+                break;
+            case 3: // west
+                loc.x--;
+                break;
+        }
+        if (this.validLocation(loc)) {
+            if (this.grid[loc.y][loc.x] == null) {
+                this.grid[entity.location.y][entity.location.x] = null;
+                this.grid[loc.y][loc.x] = entity;
+                entity.location = loc;
+            } else {
+                return this.collide(entity, this.grid[loc.y][loc.x], loc);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
 
 Game.prototype.removeEntity = function(entity) {}
