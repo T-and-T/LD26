@@ -5,7 +5,9 @@ function Entity(level) {
     this.level = level;
 }
 
-Entity.prototype.move = function(direction) {}
+Entity.prototype.move = function(direction) {
+    console.log("move!");
+}
 
 Entity.prototype.update = function() {}
 

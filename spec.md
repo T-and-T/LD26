@@ -25,7 +25,7 @@ Note that the class will have more methods (such as render), but they are only p
   * `mouseWasClicked()` - returns an object with the x and y coordinates of the mouse click relative to the video output if the mouse has been clicked since the function was last called, false otherwise
   * `onUpdate(callback)` - callback is a function which will be called once each iteration of the game loop, after all of the entities' individual update functions have been called. This function should only contain logic for the game as a whole, such as updating the scoreboard and creating new entities or enemies.
   * `onCollide(callback)` - callback is a function which will be called when an entity attempts to move to a cell which already contains an entity. When this happens, the entities will not be moved, and callback will be called with three arguments: the two entities and an object containing the x and y coordinates of the disputed location. callback must then handle the situation.
-  * `addEntity(entity, location)` - entity is an object which represents a game entity (see section about the Entity hierarchy) and location is an object with the x and y coordinates at which the entity should be inserted. If an entity already occupies that location, it will return false, otherwise, it will return true. The entity will have its location set to the specified location.
+  * `addEntity(entity, location)` - entity is an object which represents a game entity (see section about the Entity hierarchy) and location is an object with the x and y coordinates at which the entity should be inserted. If an entity already occupies that location, it will return false, otherwise, it will return true. The entity will have its location set to the specified location, and `game` set to `this`.
   * `moveEntity(entity, direction, time)` - direction is 0 for north, 1 for east, 2 for south, and 3 for west. The entity will be moved one space in the specified direction. time is the number of iterations of the game loop that it takes for the entity to be moved. If the resulting location is not on the grid, the entity will not be moved. If the resulting location is occupied, the entity will not be moved and the callback set by onCallback will be called to resolve the collision. If entity was not added to the game, no action is taken. An animation will be played during this time.
   * `removeEntity(entity)` - remove entity from game grid
 
@@ -40,11 +40,13 @@ The `Entity` interface provides a general interface that all entities should imp
   * `game` - the game that the entity belongs to
   * `time` - the number of iterations of the game loop that it takes to move the entity. I'm not sure if this is necessary, it really depends on what we want the speed of an entity to be determined by.
   * `location` - an object containing the x and y coordinates of the entity's location on the game grid; use this as a read only variable, as changing this manually will simply confuse the game engine into oblivion rather than move the entity
+  * `moving` - true when the entity is in an animated motion from one cell to another, false otherwise
+  * `timeMoved` - the number of iterations since the entity started moving
 
 ### Public Methods
 
   * `constructor(level)` - level is the level of the entity; see the section about levels for more details
-  * `move(direction)` - direction is 0 for north, 1 for east, 2 for south, and 3 for west. The entity will be moved one space in the specified direction, at the speed specified by this.speed.
+  * `move(direction)` - direction is 0 for north, 1 for east, 2 for south, and 3 for west. The entity will be moved one space in the specified direction, at the speed specified by `this.time`.
   * `update()` - called once per iteration, except when the entity is moving from one cell to another. The game logic relative to the entity should be contained in this function.
   * `die()` - called when the entity dies.
 

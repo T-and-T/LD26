@@ -16,16 +16,24 @@ function Game(id, width, height, rows, cols) {
     // variable to hold the "thread"
     this.interval = null;
 
+    // two dimensional array representing the grid
     this.grid = [];
+
+    // one dimensional array holding all entities
+    this.entities = [];
 
     this.keysdown = {};
 
+    var that = this;
+
     document.onkeydown = function(e) {
-        this.keysdown[e.keyCode] = true;
+        //console.log("Keydown: " + e.keyCode);
+        that.keysdown[e.keyCode] = true;
     };
 
     document.onkeyup = function(e) {
-        this.keysdown[e.keyCode] = false;
+        //console.log("Keyup: " + e.keyCode);
+        that.keysdown[e.keyCode] = false;
     };
 
     for (var i = 0; i < rows; i++) {
@@ -37,8 +45,12 @@ function Game(id, width, height, rows, cols) {
 }
 
 Game.prototype.update = function() {
+    for (var i = 0; i < this.entities.length; i++) {
+        this.entities[i].update();
+    }
+
     for (var i = 0; i < this.updateHandlers.length; i++) {
-        this.updateHandlers[0]();
+        this.updateHandlers[i]();
     }
     this.render();
 }
@@ -114,6 +126,9 @@ Game.prototype.addEntity = function(entity, location) {
     if (this.grid[location.x][location.y] == null) {
         this.grid[location.x][location.y] = entity;
         entity.location = {x: location.x, y: location.y};
+        entity.game = this;
+
+        this.entities.push(entity);
         return true;
     } else {
         return false;
