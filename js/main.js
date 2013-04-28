@@ -17,7 +17,7 @@ window.onload = function() {
 
     // TODO: make the location slightly randomized
     // Taneb go all math on it
-    game.addEntity(player, {x: Math.round(game.width / 2), y: Math.round(game.height / 2)});
+    game.addEntity(player, {x: Math.round(game.cols / 2), y: Math.round(game.rows / 2)});
 
     game.start();
 };
