@@ -79,9 +79,33 @@ Game.prototype.render = function() {
                 this.ctx.save();
                 this.ctx.fillStyle = "rgb(200,0,0)";
 
-                var w = (this.width / this.cols);
-                var h = (this.height / this.rows);
-                this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+                if (ent.moving == -1) {
+                    var w = (this.width / this.cols);
+                    var h = (this.height / this.rows);
+                    this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+                } else {
+                    var w = (this.width / this.cols);
+                    var h = (this.height / this.rows);
+                    var x = ent.location.x * w;
+                    var y = ent.location.y * h;
+
+                    switch (ent.moving) {
+                        case 0: // north
+                            y -= ent.timeMoved / ent.time * h;
+                            break;
+                        case 1: // east
+                            x += ent.timeMoved / ent.time * w;
+                            break;
+                        case 2: // south
+                            y += ent.timeMoved / ent.time * h;
+                            break;
+                        case 3: // west
+                            x -= ent.timeMoved / ent.time * w;
+                            break;
+                    }
+
+                    this.ctx.fillRect(x, y, w, h);
+                }
 
                 this.ctx.restore();
             }

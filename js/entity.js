@@ -8,7 +8,6 @@ function Entity(level) {
 }
 
 Entity.prototype.move = function(direction) {
-    console.log("move!");
     this.moving = direction;
     this.timeMoved = 0;
 }
