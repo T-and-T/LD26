@@ -3,13 +3,12 @@ function AIEntity(level, direction) {
     this.level = level;
     this.time = level * 100;
     this.direction = direction;
-    this.moving = direction;
 }
 
 AIEntity.prototype = new Entity(1); // inherit from Entity and set level to 1
 
 AIEntity.prototype.update = function() {
-    this.moving = this.direction;
+    this.move(this.direction);
 }
 
 AIEntity.prototype.die = function() {}

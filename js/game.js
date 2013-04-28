@@ -206,6 +206,9 @@ Game.prototype.moveEntity = function(entity, direction) {
             } else {
                 return this.collide(entity, this.grid[loc.y][loc.x], loc);
             }
+        } else if (entity.canFallOff) {
+            this.grid[entity.location.y][entity.location.x] = null;
+            this.entities.splice(this.entities.indexOf(entity));
         } else {
             return false;
         }

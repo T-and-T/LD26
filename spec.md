@@ -44,6 +44,7 @@ The `Entity` interface provides a general interface that all entities should imp
   * `location` - an object containing the x and y coordinates of the entity's location on the game grid; use this as a read only variable, as changing this manually will simply confuse the game engine into oblivion rather than move the entity
   * `moving` - the direction that the entity is moving, -1 if the entity is not moving
   * `timeMoved` - the number of iterations since the entity started moving
+  * `canFallOff` - true if the entity can leave the grid
 
 ### Public Methods
 

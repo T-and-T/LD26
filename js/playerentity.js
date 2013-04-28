@@ -1,4 +1,6 @@
-function PlayerEntity() {}
+function PlayerEntity() {
+    this.canFallOff = false;
+}
 
 PlayerEntity.prototype = new Entity(1); // inherit from Entity and set level to 1
 
