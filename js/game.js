@@ -7,6 +7,7 @@ function Game(id, width, height, rows, cols) {
     this.ctx = this.canvas.getContext("2d");
     this.rows = rows;
     this.cols = cols;
+    this.border = 10;
     this.score = 0;
 
     this.updateHandlers = [];
@@ -36,6 +37,17 @@ Game.prototype.render = function() {
     this.ctx.fillStyle = "rgb(255,255,255)";
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgb(0,0,0)";
+    
+    // TODO: animate borders
+    
+    for (var i = 0; i < this.rows; i++) {
+        this.ctx.fillRect(0, (this.height / this.rows) * i, this.width, this.border);
+    }
+    
+    for (var i = 0; i < this.cols; i++) {
+        this.ctx.fillRect((this.height / this.rows) * i, 0, this.border, this.height);
+    }
+    
     this.ctx.strokeRect(0, 0, this.width, this.height);
 }
 
