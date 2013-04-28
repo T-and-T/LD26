@@ -18,6 +18,16 @@ function Game(id, width, height, rows, cols) {
 
     this.grid = [];
 
+    this.keysdown = {};
+
+    document.onkeydown = function(e) {
+        this.keysdown[e.keyCode] = true;
+    };
+
+    document.onkeyup = function(e) {
+        this.keysdown[e.keyCode] = false;
+    };
+
     for (var i = 0; i < rows; i++) {
         this.grid.push([]);
         for (var j = 0; j < cols; j++) {
@@ -83,12 +93,11 @@ Game.prototype.start = function() {
 
 Game.prototype.setSoundtrack = function(file) {}
 
-Game.prototype.wasKeyPressed = function(key) {
-    // TODO: add queue or something
-    return false;
+Game.prototype.keyPressed = function(key) {
+    return this.keysdown[key];
 }
 
-Game.prototype.wasMouseClicked = function() {
+Game.prototype.mouseWasClicked = function() {
     // TODO: add queue or something
     return false;
 }

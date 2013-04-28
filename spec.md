@@ -21,8 +21,8 @@ Note that the class will have more methods (such as render), but they are only p
   * `constructor(id, width, height, rows, cols)` - id is the id of the element to be replaced with the game video output, width and height specify the resolution, and rows and cols specify the size of the game grid
   * `start()` - begins the game
   * `setSoundtrack(file)` - file is the relative location of the audio file containing the soundtrack, which is loaded and then looped
-  * `wasKeyPressed(key)` - returns true if key has been pressed since the function was last called, false otherwise
-  * `wasMouseClicked()` - returns an object with the x and y coordinates of the mouse click relative to the video output if the mouse has been clicked since the function was last called, false otherwise
+  * `keyPressed(key)` - returns true if key is being held down, false otherwise
+  * `mouseWasClicked()` - returns an object with the x and y coordinates of the mouse click relative to the video output if the mouse has been clicked since the function was last called, false otherwise
   * `onUpdate(callback)` - callback is a function which will be called once each iteration of the game loop, after all of the entities' individual update functions have been called. This function should only contain logic for the game as a whole, such as updating the scoreboard and creating new entities or enemies.
   * `onCollide(callback)` - callback is a function which will be called when an entity attempts to move to a cell which already contains an entity. When this happens, the entities will not be moved, and callback will be called with three arguments: the two entities and an object containing the x and y coordinates of the disputed location. callback must then handle the situation.
   * `addEntity(entity, location)` - entity is an object which represents a game entity (see section about the Entity hierarchy) and location is an object with the x and y coordinates at which the entity should be inserted. If an entity already occupies that location, it will return false, otherwise, it will return true. The entity will have its location set to the specified location.
