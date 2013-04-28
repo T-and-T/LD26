@@ -7,11 +7,11 @@ PlayerEntity.prototype.update = function() {
     if (this.game.keyPressed(38)) { // north
         this.move(0);
     } else if (this.game.keyPressed(39)) { // east
-
+	this.move(1);
     } else if (this.game.keyPressed(40)) { // south
-
+	this.move(2);
     } else if (this.game.keyPressed(37)) { // west
-
+	this.move(3);
     }
 
 }
