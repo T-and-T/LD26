@@ -16,7 +16,25 @@ function Game(id, width, height, rows, cols) {
     // variable to hold the "thread"
     this.interval = null;
 
+    // two dimensional array representing the grid
     this.grid = [];
+
+    // one dimensional array holding all entities
+    this.entities = [];
+
+    this.keysdown = {};
+
+    var that = this;
+
+    document.onkeydown = function(e) {
+        //console.log("Keydown: " + e.keyCode);
+        that.keysdown[e.keyCode] = true;
+    };
+
+    document.onkeyup = function(e) {
+        //console.log("Keyup: " + e.keyCode);
+        that.keysdown[e.keyCode] = false;
+    };
 
     for (var i = 0; i < rows; i++) {
         this.grid.push([]);
@@ -27,8 +45,21 @@ function Game(id, width, height, rows, cols) {
 }
 
 Game.prototype.update = function() {
+    for (var i = 0; i < this.entities.length; i++) {
+        var ent = this.entities[i];
+        if (ent.moving == -1) {
+            ent.update();
+        } else if (ent.timeMoved < ent.time) {
+            ent.timeMoved++;
+        } else {
+            this.moveEntity(ent, ent.moving);
+            ent.moving = -1;
+            ent.timeMoved = 0;
+        }
+    }
+
     for (var i = 0; i < this.updateHandlers.length; i++) {
-        this.updateHandlers[0]();
+        this.updateHandlers[i]();
     }
     this.render();
 }
@@ -40,12 +71,19 @@ Game.prototype.render = function() {
     
     // TODO: add state for moving entity
     
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var ent = grid[i][j];
+    for (var i = 0; i < this.grid.length; i++) {
+        for (var j = 0; j < this.grid[0].length; j++) {
+            var ent = this.grid[i][j];
             if (ent != null) {
                 // TODO: base on level
-                this.ctx.fillStyle = 
+                this.ctx.save();
+                this.ctx.fillStyle = "rgb(200,0,0)";
+
+                var w = (this.width / this.cols);
+                var h = (this.height / this.rows);
+                this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+
+                this.ctx.restore();
             }
         }
     }
@@ -76,12 +114,11 @@ Game.prototype.start = function() {
 
 Game.prototype.setSoundtrack = function(file) {}
 
-Game.prototype.wasKeyPressed = function(key) {
-    // TODO: add queue or something
-    return false;
+Game.prototype.keyPressed = function(key) {
+    return this.keysdown[key];
 }
 
-Game.prototype.wasMouseClicked = function() {
+Game.prototype.mouseWasClicked = function() {
     // TODO: add queue or something
     return false;
 }
@@ -95,9 +132,12 @@ Game.prototype.onCollide = function(callback) {
 }
 
 Game.prototype.addEntity = function(entity, location) {
-    console.log(this.grid);
     if (this.grid[location.x][location.y] == null) {
         this.grid[location.x][location.y] = entity;
+        entity.location = {x: location.x, y: location.y};
+        entity.game = this;
+
+        this.entities.push(entity);
         return true;
     } else {
         return false;
