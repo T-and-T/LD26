@@ -14,7 +14,7 @@ window.onload = function() {
     });
 
     var player = new PlayerEntity();
-    game.addEntity(player, {x: bin1_2(game.cols), y: bin1_2(game.rows)});
+    game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
 
     game.start();
 };
