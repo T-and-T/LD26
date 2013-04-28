@@ -89,22 +89,51 @@ Game.prototype.render = function() {
                     var x = ent.location.x * w;
                     var y = ent.location.y * h;
 
+                    var factor = (ent.timeMoved / ent.time);
+
                     switch (ent.moving) {
                         case 0: // north
-                            y -= scaled_sin(ent.timeMoved / ent.time) * h;
+                            var sin = y - scaled_sin(factor) * 2 * h + h;
+
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(x, y);
+                            this.ctx.lineTo(x + w, y);
+                            this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
+                            this.ctx.lineTo(circle_scale(x , sin, this.width, this.height, factor) + (x), sin);
+                            this.ctx.fill();
                             break;
                         case 1: // east
-                            x += scaled_sin(ent.timeMoved / ent.time) * w;
+                            var sin = x + scaled_sin(factor) * 2 * w;
+
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(x + w, y);
+                            this.ctx.lineTo(x + w, y + h);
+                            this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
+                            this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
+                            this.ctx.fill();
                             break;
                         case 2: // south
-                            y += scaled_sin(ent.timeMoved / ent.time) * h;
+                            var sin = y + scaled_sin(factor) * 2 * h;
+
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(x, y + h);
+                            this.ctx.lineTo(x + w, y + h);
+                            this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
+                            this.ctx.lineTo(circle_scale(x, sin, this.width, this.height, factor) + (x), sin);
+                            this.ctx.fill();
                             break;
                         case 3: // west
-                            x -= scaled_sin(ent.timeMoved / ent.time) * w;
+                            var sin = x - scaled_sin(factor) * 2 * w + w;
+
+                            this.ctx.beginPath();
+                            this.ctx.moveTo(x, y);
+                            this.ctx.lineTo(x, y + h);
+                            this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
+                            this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
+                            this.ctx.fill();
                             break;
                     }
-
-                    this.ctx.fillRect(x, y, w, h);
+                    //this.ctx.fillRect(x, y, w, h);
                 }
 
                 this.ctx.restore();

@@ -25,3 +25,18 @@ function bin1_2(n){
     }
     return r;
 }
+
+function scaled_sin(x) {
+    return 0.5 * Math.sin(Math.PI * (x - 0.5)) + 0.5;
+}
+
+function circle_scale(x, y, w, h, factor) {
+    var rx = x - w / 2;
+    var ry = y - h / 2;
+
+    console.log("x: " + x + " y: " + y + " rx: " + rx + " ry: " + ry);
+
+    var r = Math.sqrt(Math.pow(rx, 2) + Math.pow(ry, 2));
+
+    return (0.5 * Math.sin(-.5 * Math.PI + factor * 2 * Math.PI) + .5) * r * Math.abs(rx) / rx / 10;
+}
