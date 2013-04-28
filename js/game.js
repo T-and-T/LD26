@@ -172,23 +172,32 @@ Game.prototype.validLocation = function(location) {
     return location.x >= 0 && location.x < this.cols && location.y >= 0 && location.y < this.rows;
 }
 
+Game.prototype.adjacentLocation = function(location, dir) {
+    var loc = {x: location.x, y: location.y};
+
+    switch (dir) {
+        case 0: // north
+            loc.y--;
+            break;
+        case 1: // east
+            loc.x++;
+            break;
+        case 2: // south
+            loc.y++;
+            break;
+        case 3: // west
+            loc.x--;
+            break;
+    }
+
+    return loc;
+}
+
+
 Game.prototype.moveEntity = function(entity, direction) {
     if (this.entities.indexOf(entity) > -1) {
-        var loc = {x: entity.location.x, y: entity.location.y};
-        switch (direction) {
-            case 0: // north
-                loc.y--;
-                break;
-            case 1: // east
-                loc.x++;
-                break;
-            case 2: // south
-                loc.y++;
-                break;
-            case 3: // west
-                loc.x--;
-                break;
-        }
+        var loc = this.adjacentLocation(entity.location, direction);
+
         if (this.validLocation(loc)) {
             if (this.grid[loc.y][loc.x] == null) {
                 this.grid[entity.location.y][entity.location.x] = null;
