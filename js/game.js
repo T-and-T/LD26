@@ -40,12 +40,19 @@ Game.prototype.render = function() {
     
     // TODO: add state for moving entity
     
-    for (var i = 0; i < grid.length; i++) {
-        for (var j = 0; j < grid[0].length; j++) {
-            var ent = grid[i][j];
+    for (var i = 0; i < this.grid.length; i++) {
+        for (var j = 0; j < this.grid[0].length; j++) {
+            var ent = this.grid[i][j];
             if (ent != null) {
                 // TODO: base on level
-                this.ctx.fillStyle = 
+                this.ctx.save();
+                this.ctx.fillStyle = "rgb(200,0,0)";
+
+                var w = (this.width / this.cols);
+                var h = (this.height / this.rows);
+                this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+
+                this.ctx.restore();
             }
         }
     }
@@ -95,9 +102,9 @@ Game.prototype.onCollide = function(callback) {
 }
 
 Game.prototype.addEntity = function(entity, location) {
-    console.log(this.grid);
     if (this.grid[location.x][location.y] == null) {
         this.grid[location.x][location.y] = entity;
+        entity.location = {x: location.x, y: location.y};
         return true;
     } else {
         return false;
