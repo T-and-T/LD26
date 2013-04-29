@@ -118,7 +118,7 @@ Game.prototype.setColorDarkened = function(entity, factor) {
     this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
 }
 
-Game.prototype.render = function() {
+Game.prototype.inPlayRender = function() {
     this.ctx.fillStyle = "rgb(255,255,255)";
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgb(0,0,0)";
@@ -223,17 +223,38 @@ Game.prototype.render = function() {
 
         this.ctx.restore();
     }
-    
+}
+
+Game.prototype.render = function() {
+    this.ctx.save();
+
+    switch (this.state) {
+        case this.stateEnum.STARTSCREEN:
+            // show start screen, "Do you want to play a game?"
+        case this.stateEnum.PLAY:
+            this.inPlayRender();
+            break;
+        case this.stateEnum.OVER:
+            // show over screen, "Do you want to play again?"
+            break;
+    }
+
+    this.ctx.restore();
     this.ctx.strokeRect(0, 0, this.width, this.height);
 }
 
 /// publicly documented methods
 
 Game.prototype.start = function() {
+    this.state = this.stateEnum.PLAY;
     var that = this;
     this.interval = setInterval(function() {
         return that.update();
     }, 10);
+}
+
+Game.prototype.stop = function() {
+    clearInterval(this.interval);
 }
 
 Game.prototype.setSoundtrack = function(file) {}
@@ -326,4 +347,6 @@ Game.prototype.removeEntity = function(entity) {
     this.entities.splice(this.entities.indexOf(entity));
 }
 
-Game.prototype.gameOver = function() {}
+Game.prototype.gameOver = function() {
+    this.state = this.stateEnum.OVER;
+}
