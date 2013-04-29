@@ -28,7 +28,7 @@ PlayerEntity.prototype.die = function() {
 	this.game.removeEntity(this);
 	this.stomach = 0;
 	this.level = 1;
-	while(!this.game.addEntity(this, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)}))
+	while(!this.game.addEntity(this, {x: bin1_2(this.game.cols - 1), y: bin1_2(this.game.rows - 1)}))
 	    ; // try to respawn until it respawns
     }
 }

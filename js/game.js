@@ -302,3 +302,5 @@ Game.prototype.removeEntity = function(entity) {
     this.grid[entity.location.y][entity.location.x] = null;
     this.entities.splice(this.entities.indexOf(entity));
 }
+
+Game.prototype.gameOver = function() {}
