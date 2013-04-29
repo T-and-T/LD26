@@ -36,7 +36,7 @@ window.onload = function() {
     game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
     game.player = player;
    
-    var mob = new AIEntity(2, 1);
+    var mob = new AIEntity(0, 1);
     game.addEntity(mob, {x: 2, y:2});
     var mob1 = new AIEntity(2,3);
     game.addEntity(mob1, {x: 5, y: 7});
