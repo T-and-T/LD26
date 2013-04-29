@@ -14,10 +14,10 @@ window.onload = function() {
     });
 
     var player = new PlayerEntity();
+    game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
 
-    // TODO: make the location slightly randomized
-    // Taneb go all math on it
-    game.addEntity(player, {x: Math.round(game.cols / 2), y: Math.round(game.rows / 2)});
+    var mob = new AIEntity(2, 2);
+    game.addEntity(mob, {x: 0, y: 1});
 
     game.start();
 };

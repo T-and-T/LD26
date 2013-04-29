@@ -1,11 +1,19 @@
 function Entity(level) {
     this.game = null;
     this.location = null;
-    this.speed = 100;
+    this.time = 50;
     this.level = level;
+    this.moving = -1; // not moving
+    this.timeMoved = 0;
+    this.canFallOff = true;
 }
 
-Entity.prototype.move = function(direction) {}
+Entity.prototype.move = function(direction) {
+    if (this.game.validLocation(this.game.adjacentLocation(this.location, direction)) || this.canFallOff) {
+       this.moving = direction;
+       this.timeMoved = 0;
+   }
+}
 
 Entity.prototype.update = function() {}
 
