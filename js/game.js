@@ -21,6 +21,8 @@ function Game(id, width, height, rows, cols) {
 
     // one dimensional array holding all entities
     this.entities = [];
+    // handy shortcut to player, who is also in entities
+    this.player = undefined;
 
     this.keysdown = {};
 

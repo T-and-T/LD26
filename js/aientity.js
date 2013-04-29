@@ -11,4 +11,8 @@ AIEntity.prototype.update = function() {
     this.move(this.direction);
 }
 
-AIEntity.prototype.die = function() {}
+AIEntity.prototype.die = function() {
+    this.game.player.stomach += this.level;
+    this.game.score += this.level;
+    this.game.removeEntity(this);
+}
