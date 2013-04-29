@@ -1,7 +1,7 @@
 function AIEntity(level, direction) {
     this.timer = 0;
     this.level = level;
-    this.time = level * 100;
+    this.time = (level+1) * 100;
     this.direction = direction;
 }
 
@@ -12,7 +12,7 @@ AIEntity.prototype.update = function() {
 }
 
 AIEntity.prototype.die = function() {
-    this.game.player.stomach += this.level;
-    this.game.score += this.level;
+    this.game.player.stomach += 1 + this.level;
+    this.game.score += 1 + this.level;
     this.game.removeEntity(this);
 }

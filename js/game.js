@@ -9,6 +9,7 @@ function Game(id, width, height, rows, cols) {
     this.cols = cols;
     this.border = 4;
     this.score = 0;
+	this.lives = 3;
     this.ticks = 0;
 
     this.updateHandlers = [];
