@@ -41,3 +41,7 @@ function circle_scale(x, y, w, h, factor) {
     if (isNaN(result)) result = 0;
     return result;
 }
+
+function triangle(n) {
+    return n*(n+1)/2;
+}
