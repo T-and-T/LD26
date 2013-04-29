@@ -31,6 +31,7 @@ PlayerEntity.prototype.die = function() {
 	while(!this.game.addEntity(this, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)}))
 	    ; // try to respawn until it respawns
     }
+}
 
 PlayerEntity.prototype.getColor = function() {
     var clr = Entity.prototype.getColor.call(this);
