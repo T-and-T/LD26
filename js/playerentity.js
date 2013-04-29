@@ -25,10 +25,19 @@ PlayerEntity.prototype.die = function() {
     if (this.game.lives < 0)
 	this.game.gameOver();
     else {
-	this.game.removeEntity(this);
+	var that = this
+	var place = function(x, y) {
+	    if (that.game.grid[y][x] == null) {
+		that.game.grid[y][x] = that;
+		that.location = {x: x, y: y};
+		return true;
+	    }
+	    else
+		return false;
+	}
 	this.stomach = 0;
 	this.level = 1;
-	while(!this.game.addEntity(this, {x: bin1_2(this.game.cols - 1), y: bin1_2(this.game.rows - 1)}))
+	while(!place(bin1_2(this.game.cols - 1),bin1_2(this.game.rows - 1)))
 	    ; // try to respawn until it respawns
     }
 }
