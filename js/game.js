@@ -117,48 +117,54 @@ Game.prototype.render = function() {
 
         var factor = (ent.timeMoved / ent.time);
 
+        var point1, point2, point3, point4;
+
         switch (ent.moving) {
             case 0: // north
                 var sin = y - scaled_sin(factor) * 2 * h + h;
 
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y);
-                this.ctx.lineTo(x + w, y);
-                this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
-                this.ctx.lineTo(circle_scale(x , sin, this.width, this.height, factor) + (x), sin);
-                this.ctx.fill();
+                point1 = {x: x, y: y};
+                point2 = {x: x + w, y: y};
+                point3 = {x: circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), y: sin};
+                point4 = {x: circle_scale(x , sin, this.width, this.height, factor) + (x), y: sin};
+
                 break;
             case 1: // east
                 var sin = x + scaled_sin(factor) * 2 * w;
 
-                this.ctx.beginPath();
-                this.ctx.moveTo(x + w, y);
-                this.ctx.lineTo(x + w, y + h);
-                this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
-                this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
-                this.ctx.fill();
+                point1 = {x: x + w, y: y};
+                point2 = {x: x + w, y: y + h};
+                point3 = {x: sin, y: circle_scale(y + h, sin, this.height, this.width, factor) + (y+h)};
+                point4 = {x: sin, y: circle_scale(y, sin, this.height, this.width, factor) + (y)};
+
                 break;
             case 2: // south
                 var sin = y + scaled_sin(factor) * 2 * h;
 
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y + h);
-                this.ctx.lineTo(x + w, y + h);
-                this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
-                this.ctx.lineTo(circle_scale(x, sin, this.width, this.height, factor) + (x), sin);
-                this.ctx.fill();
+                point1 = {x: x, y: y + h};
+                point2 = {x: x + w, y: y + h};
+                point3 = {x: circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), y: sin};
+                point4 = {x: circle_scale(x, sin, this.width, this.height, factor) + (x), y: sin};
+                console.log("point4.x: " + point4.x + " x: " + x + " sin: " + sin + " width: " + this.width + " height: " + this.height);
+
                 break;
             case 3: // west
                 var sin = x - scaled_sin(factor) * 2 * w + w;
 
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y);
-                this.ctx.lineTo(x, y + h);
-                this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
-                this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
-                this.ctx.fill();
+                point1 = {x: x, y: y};
+                point2 = {x: x, y: y + h};
+                point3 = {x: sin, y: circle_scale(y + h, sin, this.height, this.width, factor) + (y+h)};
+                point4 = {x: sin, y: circle_scale(y, sin, this.height, this.width, factor) + (y)};
+
                 break;
         }
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(point1.x, point1.y);
+        this.ctx.lineTo(point2.x, point2.y);
+        this.ctx.lineTo(point3.x, point3.y);
+        this.ctx.lineTo(point4.x, point4.y);
+        this.ctx.fill();
 
         this.ctx.restore();
     }
