@@ -460,7 +460,7 @@ Game.prototype.moveEntity = function(entity, direction) {
 
 Game.prototype.removeEntity = function(entity) {
     this.grid[entity.location.y][entity.location.x] = null;
-    this.entities = this.entities.splice(this.entities.indexOf(entity));
+    this.entities.splice(this.entities.indexOf(entity), 1);
 }
 
 Game.prototype.gameOver = function() {
