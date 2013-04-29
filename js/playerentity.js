@@ -19,3 +19,12 @@ PlayerEntity.prototype.update = function() {
 }
 
 PlayerEntity.prototype.die = function() {}
+
+PlayerEntity.prototype.getColor = function() {
+    var clr = Entity.prototype.getColor.call(this);
+
+    // increase saturation
+    
+
+    return clr;
+}
