@@ -161,13 +161,39 @@ Game.prototype.setColorDarkened = function(entity, factor) {
 }
 
 Game.prototype.introRender = function() {
+    var w = (this.width / this.cols);
+    var h = (this.height / this.rows);
     
     for (var i = 0; i < this.grid.length; i++) {
         for (var j = 0; j < this.grid[0].length; j++) {
             var ent = this.grid[i][j];
+
+            if (ent != null) {
+                var scale_y = (this.introTime - (j - 1) * this.stagger) / this.single_col_time;
+
+                if (scale_y < 1 && scale_y >= 0)
+                    scale_y = scaled_sin(scale_y);
+                else if (scale_y < 1)
+                    scale_y = 0;
+                else
+                    scale_y = 1;
+
+                var y = this.height * scale_y;
+                var my_y = h * j
+                if (my_y <= y) {
+                    this.ctx.save();
+                    this.setColor(ent);
+                    var mw = mh = (y - my_y) / 2;
+                    if (mw > w) mw = w;
+                    if (mh > h) mh = h;
+                    mw = scaled_sin(mw / w) * w;
+                    mh = scaled_sin(mh / h) * h;
+                    this.ctx.fillRect(j * w, i * h, mw, mh);
+                    this.ctx.restore();
+                }
+            }
         }
     }
-
     for (var i = 1; i < this.cols; i++) {
         var x = (this.width / this.cols) * i - this.border / 2;
         var scale = (this.introTime - (i - 1) * this.stagger) / this.single_col_time;
@@ -434,7 +460,7 @@ Game.prototype.moveEntity = function(entity, direction) {
 
 Game.prototype.removeEntity = function(entity) {
     this.grid[entity.location.y][entity.location.x] = null;
-    this.entities.splice(this.entities.indexOf(entity));
+    this.entities = this.entities.splice(this.entities.indexOf(entity));
 }
 
 Game.prototype.gameOver = function() {
