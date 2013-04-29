@@ -9,6 +9,7 @@ function Game(id, width, height, rows, cols) {
     this.cols = cols;
     this.border = 4;
     this.score = 0;
+    this.ticks = 0;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -62,6 +63,36 @@ Game.prototype.update = function() {
         this.updateHandlers[i]();
     }
     this.render();
+
+    this.ticks++;
+}
+
+Game.prototype.setColor = function(entity) {
+    var time_for_anim = 50;
+    var clr;
+    if (entity.levelFrames == null) {
+        clr = entity.getColor();
+    } else {
+        entity.level--;
+        var old_clr = entity.getColor();
+        entity.level++;
+        var new_clr = entity.getColor();
+
+        var factor = scaled_sin(entity.levelFrames / time_for_anim);
+
+        clr = {r: Math.round((new_clr.r - old_clr.r) * factor + old_clr.r),
+               g: Math.round((new_clr.g - old_clr.g) * factor + old_clr.g),
+               b: Math.round((new_clr.b - old_clr.b) * factor + old_clr.b)};
+
+        console.log("factor: " + factor + " r: " + clr.r + " g: " + clr.g + " b: " + clr.b);
+
+        if (entity.levelFrames == time_for_anim) {
+            entity.levelFrames = null;
+        } else {
+            entity.levelFrames++;
+        }
+    }
+    this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
 }
 
 Game.prototype.render = function() {
@@ -78,8 +109,7 @@ Game.prototype.render = function() {
 
                 if (ent.moving == -1) {
                     this.ctx.save();
-                    var clr = ent.getColor();
-                    this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
+                    this.setColor(ent);
                     var w = (this.width / this.cols);
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
@@ -107,8 +137,7 @@ Game.prototype.render = function() {
         this.ctx.save();
         var ent = moving_entity_queue[i];
 
-        var clr = ent.getColor();
-        this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
+        this.setColor(ent);
 
         var w = (this.width / this.cols);
         var h = (this.height / this.rows);
@@ -193,6 +222,10 @@ Game.prototype.keyPressed = function(key) {
 Game.prototype.mouseWasClicked = function() {
     // TODO: add queue or something
     return false;
+}
+
+Game.prototype.getTicks = function() {
+    return ticks;
 }
 
 Game.prototype.onUpdate = function(callback) {

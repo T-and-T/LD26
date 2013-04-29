@@ -1,6 +1,6 @@
-var game;
+var player;
 window.onload = function() {
-    /*var */game = new Game("game", 640, 480, 10, 10);
+    var game = new Game("game", 640, 480, 10, 10);
 
     game.onUpdate(function() {
         document.getElementById("score").innerHTML = game.score;
@@ -14,7 +14,7 @@ window.onload = function() {
          */
     });
 
-    var player = new PlayerEntity();
+    /*var */player = new PlayerEntity();
     game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
 
 /*

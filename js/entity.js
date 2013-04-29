@@ -6,6 +6,7 @@ function Entity(level) {
     this.moving = -1; // not moving
     this.timeMoved = 0;
     this.canFallOff = true;
+    this.levelFrames = null;
 }
 
 Entity.prototype.move = function(direction) {
@@ -35,4 +36,9 @@ Entity.prototype.getColor = function() {
     } else {
         return colors[colors.length - 1];
     }
+}
+
+Entity.prototype.levelUp = function() {
+    this.level++;
+    this.levelFrames = 0;
 }
