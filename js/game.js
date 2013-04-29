@@ -86,6 +86,7 @@ Game.prototype.render = function() {
                 } else {
                     moving_entity_queue.push(ent);
                 }
+            }
         }
     }
     
