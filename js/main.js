@@ -34,8 +34,8 @@ window.onload = function() {
    
     var mob = new AIEntity(2, 1);
     game.addEntity(mob, {x: 2, y:2});
-    var mob1 = new AIEntity(1,3);
-    game.addEntity(mob1, {x: 5, y: 2});
+    var mob1 = new AIEntity(2,3);
+    game.addEntity(mob1, {x: 5, y: 7});
 
     game.start();
 };
