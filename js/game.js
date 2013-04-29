@@ -159,6 +159,13 @@ Game.prototype.setColorDarkened = function(entity, factor) {
 }
 
 Game.prototype.introRender = function() {
+    
+    for (var i = 0; i < this.grid.length; i++) {
+        for (var j = 0; j < this.grid[0].length; j++) {
+            var ent = this.grid[i][j];
+        }
+    }
+
     for (var i = 1; i < this.cols; i++) {
         var x = (this.width / this.cols) * i - this.border / 2;
         var scale = (this.introTime - (i - 1) * this.stagger) / this.single_col_time;
@@ -191,9 +198,6 @@ Game.prototype.introRender = function() {
 };
 
 Game.prototype.inPlayRender = function() {
-    this.ctx.fillStyle = "rgb(255,255,255)";
-    this.ctx.fillRect(0, 0, this.width, this.height);
-    this.ctx.fillStyle = "rgb(0,0,0)";
     
     var moving_entity_queue = [];
     
@@ -299,6 +303,10 @@ Game.prototype.inPlayRender = function() {
 
 Game.prototype.render = function() {
     this.ctx.save();
+
+    this.ctx.fillStyle = "rgb(255,255,255)";
+    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fillStyle = "rgb(0,0,0)";
 
     switch (this.state) {
         case this.stateEnum.STARTSCREEN:
