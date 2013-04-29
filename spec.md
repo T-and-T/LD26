@@ -22,6 +22,7 @@ Note that the class will have more methods (such as render), but they are only p
   * `start()` - begins the game
   * `setSoundtrack(file)` - file is the relative location of the audio file containing the soundtrack, which is loaded and then looped
   * `keyPressed(key)` - returns true if key is being held down, false otherwise
+  * `getTicks()` - returns the number of game loop iterations since the game was started
   * `mouseWasClicked()` - returns an object with the x and y coordinates of the mouse click relative to the video output if the mouse has been clicked since the function was last called, false otherwise
   * `onUpdate(callback)` - callback is a function which will be called once each iteration of the game loop, after all of the entities' individual update functions have been called. This function should only contain logic for the game as a whole, such as updating the scoreboard and creating new entities or enemies.
   * `onCollide(callback)` - `callback` is a function which will be called when an entity attempts to move to a cell which already contains an entity. When this happens, the entities will not be moved, and callback will be called with three arguments: the two entities and an object containing the x and y coordinates of the disputed location. `callback` must then handle the situation.
@@ -45,6 +46,7 @@ The `Entity` interface provides a general interface that all entities should imp
   * `moving` - the direction that the entity is moving, -1 if the entity is not moving
   * `timeMoved` - the number of iterations since the entity started moving
   * `canFallOff` - true if the entity can leave the grid
+  * `levelFrames` - number of frames since the level up animation started playing, null if the entity isn't currently leveling up
 
 ### Public Methods
 
@@ -53,6 +55,7 @@ The `Entity` interface provides a general interface that all entities should imp
   * `update()` - called once per iteration, except when the entity is moving from one cell to another. The game logic relative to the entity should be contained in this function.
   * `die()` - called when the entity dies.
   * `getColor()` - return an object containing the rgb values the entity should be
+  * `levelUp()` - increment level and play the leveling up animation
 
 The `PlayerEntity` class
 ------------------------
