@@ -1,3 +1,4 @@
+var player;
 window.onload = function() {
     var game = new Game("game", 640, 480, 10, 10);
 
@@ -13,7 +14,7 @@ window.onload = function() {
          */
     });
 
-    var player = new PlayerEntity();
+    /*var */player = new PlayerEntity();
     game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
     game.player = player;
     /// view color scheme (remove this code when you've seen the scheme)

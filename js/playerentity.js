@@ -26,7 +26,12 @@ PlayerEntity.prototype.getColor = function() {
     var clr = Entity.prototype.getColor.call(this);
 
     // increase saturation
-    
+    var hsv = RGBtoHSV(clr);
+
+    hsv.s = 1;
+    hsv.v = 1;
+
+    clr = HSVtoRGB(hsv);
 
     return clr;
 }

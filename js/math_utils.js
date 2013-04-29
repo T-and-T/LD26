@@ -45,3 +45,92 @@ function circle_scale(x, y, w, h, factor) {
 function triangle(n) {
     return n*(n+1)/2;
 }
+
+function RGBtoHSV(rgb) { // from http://www.cs.rit.edu/~ncs/color/t_convert.html
+    var hsv = {};
+
+    var min, max, delta;
+
+    min = Math.min(rgb.r, rgb.g, rgb.b);
+    max = Math.max(rgb.r, rgb.g, rgb.b);
+    hsv.v = max / 255;
+
+    delta = max - min;
+
+    if (max != 0)
+        hsv.s = delta / max
+    else {
+        hsv.s = 0;
+        hsv.h = -1;
+        return hsv;
+    }
+
+    if (rgb.r == max)
+        hsv.h = (rgb.g - rgb.b) / delta;
+    else if (rgb.g == max)
+        hsv.h = 2 + (rgb.b - rgb.r) / delta;
+    else
+        hsv.h = 4 + (rgb.r - rgb.g) / delta;
+
+    hsv.h *= 60;
+    if (hsv.h < 0)
+        hsv.h += 360;
+
+    return hsv;
+}
+
+function HSVtoRGB(hsv) { // from http://www.cs.rit.edu/~ncs/color/t_convert.html
+    var rgb = {};
+    var i, f, p, q, t;
+
+    if (hsv.s == 0) {
+        rgb.r = rgb.g = rgb.b = hsv.v * 255;
+        return rgb;
+    }
+
+    hsv.h /= 60;
+    i = Math.floor(hsv.h);
+    f = hsv.h - i;
+    p = hsv.v * (1 - hsv.s);
+    q = hsv.v * (1 - hsv.s * f);
+    t = hsv.v * (1 - hsv.s * (1 - f));
+
+    switch (i) {
+        case 0:
+            rgb.r = hsv.v;
+            rgb.g = t;
+            rgb.b = p;
+            break;
+        case 1:
+            rgb.r = q;
+            rgb.g = hsv.v;
+            rgb.b = p;
+            break;
+        case 2:
+            rgb.r = p;
+            rgb.g = hsv.v;
+            rgb.b = t;
+            break;
+        case 3:
+            rgb.r = p;
+            rgb.g = q;
+            rgb.b = hsv.v;
+            break;
+        case 4:
+            rgb.r = t;
+            rgb.g = p;
+            rgb.b = hsv.v;
+            break;
+        default:
+            rgb.r = hsv.v;
+            rgb.g = p;
+            rgb.b = q;
+            break;
+    }
+
+    rgb.r = Math.round(rgb.r * 255);
+    rgb.g = Math.round(rgb.g * 255);
+    rgb.b = Math.round(rgb.b * 255);
+
+    return rgb;
+}
