@@ -11,6 +11,7 @@ function Game(id, width, height, rows, cols) {
     this.score = 0;
     this.lives = 3;
     this.ticks = 0;
+    this.state = this.stateEnum.STARTSCREEN;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -27,6 +28,7 @@ function Game(id, width, height, rows, cols) {
     this.player = undefined;
 
     this.keysdown = {};
+    this.click = false;
 
     var that = this;
 
@@ -40,6 +42,10 @@ function Game(id, width, height, rows, cols) {
         that.keysdown[e.keyCode] = false;
     };
 
+    this.canvas.onmouseup = function(e) {
+        that.click = {x: e.clientX, y: e.clientY};
+    }
+
     for (var i = 0; i < rows; i++) {
         this.grid.push([]);
         for (var j = 0; j < cols; j++) {
@@ -48,23 +54,34 @@ function Game(id, width, height, rows, cols) {
     }
 }
 
+Game.prototype.stateEnum = {
+    STARTSCREEN: 0,
+    PLAY: 1,
+    OVER: 2
+};
+
 Game.prototype.update = function() {
-    for (var i = 0; i < this.entities.length; i++) {
-        var ent = this.entities[i];
-        if (ent.moving == -1) {
-            ent.update();
-        } else if (ent.timeMoved < ent.getTime()) {
-            ent.timeMoved++;
-        } else {
-            this.moveEntity(ent, ent.moving);
-            ent.moving = -1;
-            ent.timeMoved = 0;
-        }
+    switch (this.state) {
+        case this.stateEnum.PLAY:
+            for (var i = 0; i < this.entities.length; i++) {
+                var ent = this.entities[i];
+                if (ent.moving == -1) {
+                    ent.update();
+                } else if (ent.timeMoved < ent.getTime()) {
+                    ent.timeMoved++;
+                } else {
+                    this.moveEntity(ent, ent.moving);
+                    ent.moving = -1;
+                    ent.timeMoved = 0;
+                }
+            }
+            break;
     }
 
     for (var i = 0; i < this.updateHandlers.length; i++) {
         this.updateHandlers[i]();
     }
+
     this.render();
 
     this.ticks++;
@@ -111,7 +128,7 @@ Game.prototype.setColorDarkened = function(entity, factor) {
     this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
 }
 
-Game.prototype.render = function() {
+Game.prototype.inPlayRender = function() {
     this.ctx.fillStyle = "rgb(255,255,255)";
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgb(0,0,0)";
@@ -216,17 +233,39 @@ Game.prototype.render = function() {
 
         this.ctx.restore();
     }
-    
+}
+
+Game.prototype.render = function() {
+    this.ctx.save();
+
+    switch (this.state) {
+        case this.stateEnum.STARTSCREEN:
+            // show start screen, "Do you want to play a game?"
+            break;
+        case this.stateEnum.PLAY:
+            this.inPlayRender();
+            break;
+        case this.stateEnum.OVER:
+            // show over screen, "Do you want to play again?"
+            break;
+    }
+
+    this.ctx.restore();
     this.ctx.strokeRect(0, 0, this.width, this.height);
 }
 
 /// publicly documented methods
 
 Game.prototype.start = function() {
+    this.state = this.stateEnum.STARTSCREEN;
     var that = this;
     this.interval = setInterval(function() {
         return that.update();
     }, 10);
+}
+
+Game.prototype.stop = function() {
+    clearInterval(this.interval);
 }
 
 Game.prototype.setSoundtrack = function(file) {}
@@ -236,8 +275,12 @@ Game.prototype.keyPressed = function(key) {
 }
 
 Game.prototype.mouseWasClicked = function() {
-    // TODO: add queue or something
-    return false;
+    if (this.click) {
+        var r = this.click;
+        this.click = false;
+        return r;
+    } else
+        return false;
 }
 
 Game.prototype.getTicks = function() {
@@ -311,6 +354,7 @@ Game.prototype.moveEntity = function(entity, direction) {
     } else {
         return false;
     }
+    return true;
 }
 
 Game.prototype.removeEntity = function(entity) {
@@ -318,4 +362,6 @@ Game.prototype.removeEntity = function(entity) {
     this.entities.splice(this.entities.indexOf(entity));
 }
 
-Game.prototype.gameOver = function() {}
+Game.prototype.gameOver = function() {
+    this.state = this.stateEnum.OVER;
+}

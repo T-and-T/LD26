@@ -3,6 +3,9 @@ window.onload = function() {
     var game = new Game("game", 640, 480, 10, 10);
 
     game.onUpdate(function() {
+        if (game.state === game.stateEnum.STARTSCREEN && game.mouseWasClicked()) {
+            game.state = game.stateEnum.PLAY;
+        }
         document.getElementById("score").innerHTML = game.score;
     });
 
