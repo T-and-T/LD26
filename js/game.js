@@ -96,6 +96,8 @@ Game.prototype.update = function() {
             for (var i = 0; i < this.entities.length; i++) {
                 var ent = this.entities[i];
                 if (ent.moving == -1) {
+		    if (!Object.is(ent, this.player))
+			console.log(i);
                     ent.update();
                 } else if (ent.timeMoved < ent.getTime()) {
                     ent.timeMoved++;
