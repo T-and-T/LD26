@@ -9,6 +9,7 @@ function Game(id, width, height, rows, cols) {
     this.cols = cols;
     this.border = 4;
     this.score = 0;
+    this.lives = 3;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -270,3 +271,5 @@ Game.prototype.removeEntity = function(entity) {
     this.grid[entity.location.y][entity.location.x] = null;
     this.entities.splice(this.entities.indexOf(entity));
 }
+
+Game.prototype.gameOver = function() {}

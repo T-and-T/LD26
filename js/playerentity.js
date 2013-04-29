@@ -20,4 +20,15 @@ PlayerEntity.prototype.update = function() {
 
 }
 
-PlayerEntity.prototype.die = function() {}
+PlayerEntity.prototype.die = function() {
+    this.game.lives -= 1;
+    if (this.game.lives < 0)
+	this.game.gameOver();
+    else {
+	this.game.removeEntity(this);
+	this.stomach = 0;
+	this.level = 1;
+	while(!this.game.addEntity(this, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)}))
+	    ; // try to respawn until it respawns
+    }
+}
