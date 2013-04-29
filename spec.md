@@ -15,6 +15,7 @@ The game class is the primary backbone of the game; it takes care of everything 
   * `score` - the player's current score
   * `state` - the game's state, one of the values defined in `stateEnum`
   * `stateEnum` - the possible states of the game:
+    * `STARTSCREEN` - the start screen is displayed
     * `PLAY` - the game is being played
     * `OVER` - the game is over
 

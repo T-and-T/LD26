@@ -11,6 +11,7 @@ function Game(id, width, height, rows, cols) {
     this.score = 0;
     this.lives = 3;
     this.ticks = 0;
+    this.state = this.stateEnum.STARTSCREEN;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -47,6 +48,12 @@ function Game(id, width, height, rows, cols) {
         }
     }
 }
+
+Game.prototype.stateEnum = {
+    STARTSCREEN: 0,
+    PLAY: 1,
+    OVER: 2
+};
 
 Game.prototype.update = function() {
     for (var i = 0; i < this.entities.length; i++) {
