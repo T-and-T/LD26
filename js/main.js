@@ -1,6 +1,5 @@
-var game;
 window.onload = function() {
-    /*var */game = new Game("game", 640, 480, 10, 10);
+    var game = new Game("game", 640, 480, 10, 10);
 
     game.onUpdate(function() {
         document.getElementById("score").innerHTML = game.score;
