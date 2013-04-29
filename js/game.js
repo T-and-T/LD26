@@ -145,7 +145,6 @@ Game.prototype.render = function() {
                 point2 = {x: x + w, y: y + h};
                 point3 = {x: circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), y: sin};
                 point4 = {x: circle_scale(x, sin, this.width, this.height, factor) + (x), y: sin};
-                console.log("point4.x: " + point4.x + " x: " + x + " sin: " + sin + " width: " + this.width + " height: " + this.height);
 
                 break;
             case 3: // west
@@ -167,6 +166,8 @@ Game.prototype.render = function() {
         this.ctx.fill();
 
         this.ctx.restore();
+
+        this.ctx.stroke();
     }
     
     this.ctx.strokeRect(0, 0, this.width, this.height);
