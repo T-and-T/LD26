@@ -69,7 +69,7 @@ Game.prototype.render = function() {
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.ctx.fillStyle = "rgb(0,0,0)";
     
-    // TODO: add state for moving entity
+    var moving_entity_queue = [];
     
     for (var i = 0; i < this.grid.length; i++) {
         for (var j = 0; j < this.grid[0].length; j++) {
@@ -84,60 +84,8 @@ Game.prototype.render = function() {
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
                 } else {
-                    var w = (this.width / this.cols);
-                    var h = (this.height / this.rows);
-                    var x = ent.location.x * w;
-                    var y = ent.location.y * h;
-
-                    var factor = (ent.timeMoved / ent.time);
-
-                    switch (ent.moving) {
-                        case 0: // north
-                            var sin = y - scaled_sin(factor) * 2 * h + h;
-
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(x, y);
-                            this.ctx.lineTo(x + w, y);
-                            this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
-                            this.ctx.lineTo(circle_scale(x , sin, this.width, this.height, factor) + (x), sin);
-                            this.ctx.fill();
-                            break;
-                        case 1: // east
-                            var sin = x + scaled_sin(factor) * 2 * w;
-
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(x + w, y);
-                            this.ctx.lineTo(x + w, y + h);
-                            this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
-                            this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
-                            this.ctx.fill();
-                            break;
-                        case 2: // south
-                            var sin = y + scaled_sin(factor) * 2 * h;
-
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(x, y + h);
-                            this.ctx.lineTo(x + w, y + h);
-                            this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
-                            this.ctx.lineTo(circle_scale(x, sin, this.width, this.height, factor) + (x), sin);
-                            this.ctx.fill();
-                            break;
-                        case 3: // west
-                            var sin = x - scaled_sin(factor) * 2 * w + w;
-
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(x, y);
-                            this.ctx.lineTo(x, y + h);
-                            this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
-                            this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
-                            this.ctx.fill();
-                            break;
-                    }
-                    //this.ctx.fillRect(x, y, w, h);
+                    moving_entity_queue.push(ent);
                 }
-
-                this.ctx.restore();
-            }
         }
     }
     
@@ -151,6 +99,62 @@ Game.prototype.render = function() {
     for (var i = 1; i < this.cols; i++) {
         var x = (this.width / this.cols) * i - this.border / 2;
         this.ctx.fillRect(x, 0, this.border, this.height);
+    }
+    
+    for (var i = 0; i < moving_entity_queue.length; i++) {
+        var ent = moving_entity_queue[i];
+        
+        var w = (this.width / this.cols);
+        var h = (this.height / this.rows);
+        var x = ent.location.x * w;
+        var y = ent.location.y * h;
+
+        var factor = (ent.timeMoved / ent.time);
+
+        switch (ent.moving) {
+            case 0: // north
+                var sin = y - scaled_sin(factor) * 2 * h + h;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y);
+                this.ctx.lineTo(x + w, y);
+                this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
+                this.ctx.lineTo(circle_scale(x , sin, this.width, this.height, factor) + (x), sin);
+                this.ctx.fill();
+                break;
+            case 1: // east
+                var sin = x + scaled_sin(factor) * 2 * w;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x + w, y);
+                this.ctx.lineTo(x + w, y + h);
+                this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
+                this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
+                this.ctx.fill();
+                break;
+            case 2: // south
+                var sin = y + scaled_sin(factor) * 2 * h;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y + h);
+                this.ctx.lineTo(x + w, y + h);
+                this.ctx.lineTo(circle_scale(x + w, sin, this.width, this.height, factor) + (x+w), sin);
+                this.ctx.lineTo(circle_scale(x, sin, this.width, this.height, factor) + (x), sin);
+                this.ctx.fill();
+                break;
+            case 3: // west
+                var sin = x - scaled_sin(factor) * 2 * w + w;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y);
+                this.ctx.lineTo(x, y + h);
+                this.ctx.lineTo(sin, circle_scale(sin, y + h, this.width, this.height, factor) + (y+h));
+                this.ctx.lineTo(sin, circle_scale(sin, y, this.width, this.height, factor) + (y));
+                this.ctx.fill();
+                break;
+        }
+
+        this.ctx.restore();
     }
     
     this.ctx.strokeRect(0, 0, this.width, this.height);
