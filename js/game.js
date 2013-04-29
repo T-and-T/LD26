@@ -28,6 +28,7 @@ function Game(id, width, height, rows, cols) {
     this.player = undefined;
 
     this.keysdown = {};
+    this.click = false;
 
     var that = this;
 
@@ -40,6 +41,10 @@ function Game(id, width, height, rows, cols) {
         //console.log("Keyup: " + e.keyCode);
         that.keysdown[e.keyCode] = false;
     };
+
+    this.canvas.onmouseup = function(e) {
+        that.click = {x: e.clientX, y: e.clientY};
+    }
 
     for (var i = 0; i < rows; i++) {
         this.grid.push([]);
@@ -56,22 +61,27 @@ Game.prototype.stateEnum = {
 };
 
 Game.prototype.update = function() {
-    for (var i = 0; i < this.entities.length; i++) {
-        var ent = this.entities[i];
-        if (ent.moving == -1) {
-            ent.update();
-        } else if (ent.timeMoved < ent.getTime()) {
-            ent.timeMoved++;
-        } else {
-            this.moveEntity(ent, ent.moving);
-            ent.moving = -1;
-            ent.timeMoved = 0;
-        }
+    switch (this.state) {
+        case this.stateEnum.PLAY:
+            for (var i = 0; i < this.entities.length; i++) {
+                var ent = this.entities[i];
+                if (ent.moving == -1) {
+                    ent.update();
+                } else if (ent.timeMoved < ent.getTime()) {
+                    ent.timeMoved++;
+                } else {
+                    this.moveEntity(ent, ent.moving);
+                    ent.moving = -1;
+                    ent.timeMoved = 0;
+                }
+            }
+            break;
     }
 
     for (var i = 0; i < this.updateHandlers.length; i++) {
         this.updateHandlers[i]();
     }
+
     this.render();
 
     this.ticks++;
@@ -231,6 +241,7 @@ Game.prototype.render = function() {
     switch (this.state) {
         case this.stateEnum.STARTSCREEN:
             // show start screen, "Do you want to play a game?"
+            break;
         case this.stateEnum.PLAY:
             this.inPlayRender();
             break;
@@ -246,7 +257,7 @@ Game.prototype.render = function() {
 /// publicly documented methods
 
 Game.prototype.start = function() {
-    this.state = this.stateEnum.PLAY;
+    this.state = this.stateEnum.STARTSCREEN;
     var that = this;
     this.interval = setInterval(function() {
         return that.update();
@@ -264,8 +275,12 @@ Game.prototype.keyPressed = function(key) {
 }
 
 Game.prototype.mouseWasClicked = function() {
-    // TODO: add queue or something
-    return false;
+    if (this.click) {
+        var r = this.click;
+        this.click = false;
+        return r;
+    } else
+        return false;
 }
 
 Game.prototype.getTicks = function() {
