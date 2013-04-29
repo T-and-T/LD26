@@ -6,7 +6,7 @@ function PlayerEntity() {
 PlayerEntity.prototype = new Entity(1); // inherit from Entity and set level to 1
 
 PlayerEntity.prototype.update = function() {
-    if (this.stomach >= triangle(this.level + 1) + 2)
+    if (this.stomach >= triangle(this.level + 1) + 2 && this.level < 10)
 	this.level += 1;
     if (this.game.keyPressed(38)) { // north
         this.move(0);

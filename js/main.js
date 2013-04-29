@@ -40,6 +40,8 @@ window.onload = function() {
     game.addEntity(mob, {x: 2, y:2});
     var mob1 = new AIEntity(2,3);
     game.addEntity(mob1, {x: 5, y: 7});
+    var mob2 = new AIEntity(0, 2);
+    game.addEntity(mob2, {x: 4, y: 2});
 
     game.start();
 };
