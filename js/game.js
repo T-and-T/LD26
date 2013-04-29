@@ -68,7 +68,7 @@ Game.prototype.update = function() {
 }
 
 Game.prototype.setColor = function(entity) {
-    var time_for_anim = 50;
+    var time_for_anim = 30;
     var clr;
     if (entity.levelFrames == null) {
         clr = entity.getColor();
@@ -83,8 +83,6 @@ Game.prototype.setColor = function(entity) {
         clr = {r: Math.round((new_clr.r - old_clr.r) * factor + old_clr.r),
                g: Math.round((new_clr.g - old_clr.g) * factor + old_clr.g),
                b: Math.round((new_clr.b - old_clr.b) * factor + old_clr.b)};
-
-        console.log("factor: " + factor + " r: " + clr.r + " g: " + clr.g + " b: " + clr.b);
 
         if (entity.levelFrames == time_for_anim) {
             entity.levelFrames = null;
