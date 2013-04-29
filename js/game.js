@@ -163,11 +163,13 @@ Game.prototype.render = function() {
         this.ctx.lineTo(point2.x, point2.y);
         this.ctx.lineTo(point3.x, point3.y);
         this.ctx.lineTo(point4.x, point4.y);
+        this.ctx.closePath();
         this.ctx.fill();
 
-        this.ctx.restore();
-
+        this.ctx.lineWidth = this.border;
         this.ctx.stroke();
+
+        this.ctx.restore();
     }
     
     this.ctx.strokeRect(0, 0, this.width, this.height);
