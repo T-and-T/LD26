@@ -2,7 +2,7 @@ window.onload = function() {
     var game = new Game("game", 640, 480, 10, 10);
 
     game.onUpdate(function() {
-        // pass
+        document.getElementById("score").innerHTML = game.score;
     });
 
     game.onCollide(function(entity1, entity2, location) {

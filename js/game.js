@@ -77,9 +77,9 @@ Game.prototype.render = function() {
             if (ent != null) {
 
                 if (ent.moving == -1) {
-                    // TODO: base on level
                     this.ctx.save();
-                    this.ctx.fillStyle = "rgb(200,0,0)";
+                    var clr = ent.getColor();
+                    this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
                     var w = (this.width / this.cols);
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
@@ -104,12 +104,12 @@ Game.prototype.render = function() {
     }
     
     for (var i = 0; i < moving_entity_queue.length; i++) {
-        // TODO: base on level
         this.ctx.save();
-        this.ctx.fillStyle = "rgb(200,0,0)";
-        
         var ent = moving_entity_queue[i];
-        
+
+        var clr = ent.getColor();
+        this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
+
         var w = (this.width / this.cols);
         var h = (this.height / this.rows);
         var x = ent.location.x * w;

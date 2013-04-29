@@ -52,6 +52,7 @@ The `Entity` interface provides a general interface that all entities should imp
   * `move(direction)` - direction is 0 for north, 1 for east, 2 for south, and 3 for west. The entity will be moved one space in the specified direction, at the speed specified by `this.time`.
   * `update()` - called once per iteration, except when the entity is moving from one cell to another. The game logic relative to the entity should be contained in this function.
   * `die()` - called when the entity dies.
+  * `getColor()` - return an object containing the rgb values the entity should be
 
 The `PlayerEntity` class
 ------------------------

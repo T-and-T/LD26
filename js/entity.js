@@ -18,3 +18,7 @@ Entity.prototype.move = function(direction) {
 Entity.prototype.update = function() {}
 
 Entity.prototype.die = function() {}
+
+Entity.prototype.getColor = function() {
+    return {r: 200, g: 0, b: 0};
+}
