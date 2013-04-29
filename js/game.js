@@ -466,3 +466,29 @@ Game.prototype.removeEntity = function(entity) {
 Game.prototype.gameOver = function() {
     this.state = this.stateEnum.OVER;
 }
+
+Game.prototype.spawnMob = function(level) {
+    var side = Math.floor(Math.random() * 4);
+    var mob = new AIEntity(level, side);
+    switch(side) {
+    case 0:
+	// south->north
+	while (!this.addEntity(mob, {x: Math.floor(Math.random() * this.cols), y: this.rows - 1}))
+	    ;
+	break;
+    case 1:
+	// west->east
+	while (!this.addEntity(mob, {x: 0, y: Math.floor(Math.random() * this.rows)}))
+	    ;
+	break;
+    case 2:
+	// north->south
+	while (!this.addEntity(mob, {x: Math.floor(Math.random() * this.cols), y: 0}))
+	    ;
+    case 3:
+	// east->west
+	while (!this.addEntity(mob, {x: this.cols - 1, y: Math.floor(Math.random() * this.rows)}))
+	    ;
+    }
+}
+
