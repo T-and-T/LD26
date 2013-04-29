@@ -1,7 +1,6 @@
 function Entity(level) {
     this.game = null;
     this.location = null;
-    this.time = 50;
     this.level = level;
     this.moving = -1; // not moving
     this.timeMoved = 0;
@@ -41,4 +40,8 @@ Entity.prototype.getColor = function() {
 Entity.prototype.levelUp = function() {
     this.level++;
     this.levelFrames = 0;
+}
+
+Entity.prototype.getTime = function() {
+    return (this.level+1) * 25;
 }

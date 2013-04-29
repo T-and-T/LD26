@@ -1,7 +1,6 @@
 function AIEntity(level, direction) {
     this.timer = 0;
     this.level = level;
-    this.time = (level+1) * 100;
     this.direction = direction;
 }
 

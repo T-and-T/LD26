@@ -53,7 +53,7 @@ Game.prototype.update = function() {
         var ent = this.entities[i];
         if (ent.moving == -1) {
             ent.update();
-        } else if (ent.timeMoved < ent.time) {
+        } else if (ent.timeMoved < ent.getTime()) {
             ent.timeMoved++;
         } else {
             this.moveEntity(ent, ent.moving);
@@ -145,7 +145,7 @@ Game.prototype.render = function() {
         var x = ent.location.x * w;
         var y = ent.location.y * h;
 
-        var factor = (ent.timeMoved / ent.time);
+        var factor = (ent.timeMoved / ent.getTime());
 
         var point1, point2, point3, point4;
 
