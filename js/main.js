@@ -4,7 +4,8 @@ window.onload = function() {
 
     game.onUpdate(function() {
         if (game.state === game.stateEnum.STARTSCREEN && game.mouseWasClicked()) {
-            game.state = game.stateEnum.PLAY;
+            game.state = game.stateEnum.INTRO;
+            game.introTime = 0;
         }
         document.getElementById("score").innerHTML = game.score;
     });

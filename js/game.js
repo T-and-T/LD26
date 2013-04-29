@@ -12,6 +12,13 @@ function Game(id, width, height, rows, cols) {
     this.lives = 3;
     this.ticks = 0;
     this.state = this.stateEnum.STARTSCREEN;
+    this.introTime = 0;
+    this.single_col_time = 100;
+    this.stagger = 10;
+
+    /// Images
+
+    this.startscreen = null;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -52,6 +59,8 @@ function Game(id, width, height, rows, cols) {
             this.grid[i].push(null);
         }
     }
+
+    this.load();
 }
 
 Game.prototype.stateEnum = {
@@ -60,8 +69,29 @@ Game.prototype.stateEnum = {
     OVER: 2
 };
 
+Game.prototype.loadImage = function(filename) {
+    var img = new Image();
+    img.src = filename;
+    return img;
+}
+
+Game.prototype.load = function() {
+    this.startscreen = this.loadImage("images/splash.png");
+}
+
 Game.prototype.update = function() {
     switch (this.state) {
+        case this.stateEnum.INTRO:
+            var col_length = this.single_col_time + this.stagger * (this.cols - 1);
+            var row_length = this.single_col_time + this.stagger * (this.rows - 1);
+            var anim_length = Math.max(col_length, row_length);
+            if (this.introTime < anim_length) {
+                this.introTime++;
+            } else {
+                this.introTime = 0;
+                this.state = this.stateEnum.PLAY;
+            }
+            break;
         case this.stateEnum.PLAY:
             for (var i = 0; i < this.entities.length; i++) {
                 var ent = this.entities[i];
@@ -127,6 +157,38 @@ Game.prototype.setColorDarkened = function(entity, factor) {
     clr = HSVtoRGB(hsv);
     this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
 }
+
+Game.prototype.introRender = function() {
+    for (var i = 1; i < this.cols; i++) {
+        var x = (this.width / this.cols) * i - this.border / 2;
+        var scale = (this.introTime - (i - 1) * this.stagger) / this.single_col_time;
+
+        if (scale < 1 && scale >= 0)
+            scale = scaled_sin(scale);
+        else if (scale < 1)
+            scale = 0;
+        else
+            scale = 1;
+
+        var y = this.height * scale - this.height;
+        this.ctx.fillRect(x, y, this.border, this.height);
+    }
+
+    for (var i = 1; i < this.rows; i++) {
+        var y = (this.height / this.rows) * i - this.border / 2;
+        var scale = (this.introTime - (i - 1) * this.stagger) / this.single_col_time;
+
+        if (scale < 1 && scale >= 0)
+            scale = scaled_sin(scale);
+        else if (scale < 1)
+            scale = 0;
+        else
+            scale = 1;
+
+        var x = this.width * scale - this.width;
+        this.ctx.fillRect(x, y, this.width, this.border);
+    }
+};
 
 Game.prototype.inPlayRender = function() {
     this.ctx.fillStyle = "rgb(255,255,255)";
@@ -240,7 +302,10 @@ Game.prototype.render = function() {
 
     switch (this.state) {
         case this.stateEnum.STARTSCREEN:
-            // show start screen, "Do you want to play a game?"
+            this.ctx.drawImage(this.startscreen, 0, 0);
+            break;
+        case this.stateEnum.INTRO:
+            this.introRender();
             break;
         case this.stateEnum.PLAY:
             this.inPlayRender();
