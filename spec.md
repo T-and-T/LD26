@@ -13,6 +13,10 @@ The game class is the primary backbone of the game; it takes care of everything 
   * `width` - the width of the video display
   * `height` - the height of the video display
   * `score` - the player's current score
+  * `state` - the game's state, one of the values defined in `stateEnum`
+  * `stateEnum` - the possible states of the game:
+    * `PLAY` - the game is being played
+    * `OVER` - the game is over
 
 ### Public Methods
 

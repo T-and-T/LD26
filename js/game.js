@@ -311,6 +311,7 @@ Game.prototype.moveEntity = function(entity, direction) {
     } else {
         return false;
     }
+    return true;
 }
 
 Game.prototype.removeEntity = function(entity) {
