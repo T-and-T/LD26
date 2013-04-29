@@ -75,14 +75,15 @@ Game.prototype.render = function() {
         for (var j = 0; j < this.grid[0].length; j++) {
             var ent = this.grid[i][j];
             if (ent != null) {
-                // TODO: base on level
-                this.ctx.save();
-                this.ctx.fillStyle = "rgb(200,0,0)";
 
                 if (ent.moving == -1) {
+                    // TODO: base on level
+                    this.ctx.save();
+                    this.ctx.fillStyle = "rgb(200,0,0)";
                     var w = (this.width / this.cols);
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+                    this.ctx.restore();
                 } else {
                     moving_entity_queue.push(ent);
                 }
@@ -103,6 +104,10 @@ Game.prototype.render = function() {
     }
     
     for (var i = 0; i < moving_entity_queue.length; i++) {
+        // TODO: base on level
+        this.ctx.save();
+        this.ctx.fillStyle = "rgb(200,0,0)";
+        
         var ent = moving_entity_queue[i];
         
         var w = (this.width / this.cols);
