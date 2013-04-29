@@ -9,7 +9,7 @@ function Game(id, width, height, rows, cols) {
     this.cols = cols;
     this.border = 4;
     this.score = 0;
-	this.lives = 3;
+    this.lives = 3;
     this.ticks = 0;
 
     this.updateHandlers = [];
@@ -70,7 +70,7 @@ Game.prototype.update = function() {
     this.ticks++;
 }
 
-Game.prototype.setColor = function(entity) {
+Game.prototype.calculateColor = function(entity) {
     var time_for_anim = 30;
     var clr;
     if (entity.levelFrames == null) {
@@ -93,6 +93,21 @@ Game.prototype.setColor = function(entity) {
             entity.levelFrames++;
         }
     }
+
+    return clr;
+}
+
+Game.prototype.setColor = function(entity) {
+    var clr = this.calculateColor(entity);
+    this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
+}
+
+Game.prototype.setColorDarkened = function(entity, factor) {
+    var clr = this.calculateColor(entity);
+    var hsv = RGBtoHSV(clr);
+    var scale = -(0.5 * Math.sin(-.5 * Math.PI + factor * 2 * Math.PI) - .5);
+    hsv.v *= (3 + scale) / 4;
+    clr = HSVtoRGB(hsv);
     this.ctx.fillStyle = "rgb(" + clr.r + "," + clr.g + "," + clr.b + ")";
 }
 
@@ -136,16 +151,16 @@ Game.prototype.render = function() {
     
     for (var i = 0; i < moving_entity_queue.length; i++) {
         this.ctx.save();
-        var ent = moving_entity_queue[i];
 
-        this.setColor(ent);
+        var ent = moving_entity_queue[i];
+        var factor = (ent.timeMoved / ent.getTime());
+
+        this.setColorDarkened(ent, factor);
 
         var w = (this.width / this.cols);
         var h = (this.height / this.rows);
         var x = ent.location.x * w;
         var y = ent.location.y * h;
-
-        var factor = (ent.timeMoved / ent.getTime());
 
         var point1, point2, point3, point4;
 
@@ -226,7 +241,7 @@ Game.prototype.mouseWasClicked = function() {
 }
 
 Game.prototype.getTicks = function() {
-    return ticks;
+    return this.ticks;
 }
 
 Game.prototype.onUpdate = function(callback) {
