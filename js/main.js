@@ -1,11 +1,49 @@
-var player;
+var game;
 window.onload = function() {
-    var game = new Game("game", 640, 480, 10, 10);
+    game = new Game("game", 640, 480, 10, 10);
 
     game.onUpdate(function() {
         if (game.state === game.stateEnum.STARTSCREEN && game.mouseWasClicked()) {
             game.state = game.stateEnum.INTRO;
             game.introTime = 0;
+        } else if (game.state === game.stateEnum.PLAY) {
+            var chance_per_level = [ // measured in 10 percents
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // won't ever be at this level
+                [8, 7, 6, 5, 4, 3, 2, 1, 0, 0],
+                [7, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+                [6, 7, 8, 7, 6, 5, 4, 3, 2, 1],
+                [5, 6, 7, 8, 7, 6, 5, 4, 3, 2],
+                [4, 5, 6, 7, 8, 7, 6, 5, 4, 3],
+                [3, 4, 5, 6, 7, 8, 7, 6, 5, 4],
+                [2, 3, 4, 5, 6, 7, 8, 7, 6, 5],
+                [1, 2, 3, 4, 5, 6, 7, 8, 7, 6],
+                [0, 1, 2, 3, 4, 5, 6, 7, 8, 7],
+            ];
+            var enemies_per_level = [0, 5, 5, 6, 6, 7, 7, 8, 9, 10];
+
+            // the current enemies, sorted by level
+            var current_enemies = [];
+            var num_enemies = 0;
+
+            for (var i = 0; i < 9; i++) {
+                current_enemies[i] = game.countEnemiesOfLevel(i);
+                num_enemies += current_enemies[i];
+            }
+
+            if (num_enemies < enemies_per_level[game.player.level]) {
+                var total_pool = 0;
+                for (var i = 0; i < chance_per_level[game.player.level].length; i++) {
+                    total_pool += chance_per_level[game.player.level][i];
+                }
+                var chosen = Math.floor(Math.random() * (total_pool - 0 + 1)) + 0;
+                for (var i = 0; i < chance_per_level[game.player.level].length; i++) {
+                    chosen -= chance_per_level[game.player.level][i];
+                    if (chosen <= 0) {
+                        game.spawnMob(i);
+                        break;
+                    }
+                }
+            }
         }
         document.getElementById("score").innerHTML = game.score;
     });

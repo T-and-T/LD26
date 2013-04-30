@@ -80,6 +80,7 @@ Game.prototype.load = function() {
 }
 
 Game.prototype.update = function() {
+
     switch (this.state) {
         case this.stateEnum.INTRO:
             var col_length = this.single_col_time + this.stagger * (this.cols - 1);
@@ -112,6 +113,17 @@ Game.prototype.update = function() {
 
     for (var i = 0; i < this.updateHandlers.length; i++) {
         this.updateHandlers[i]();
+    }
+
+    /// remove any entities that have accidentally remained on the grid HACKISH I KNOW
+
+    for (var i = 0; i < this.grid.length; i++) {
+        for (var j = 0; j < this.grid[0].length; j++) {
+            var ent = this.grid[i][j];
+            if (ent != null && this.entities.indexOf(ent) == -1) {
+                this.grid[i][j] = null;
+            }
+        }
     }
 
     this.render();
@@ -459,6 +471,8 @@ Game.prototype.moveEntity = function(entity, direction) {
 }
 
 Game.prototype.removeEntity = function(entity) {
+    console.log("Removing entity:");
+    console.log(entity);
     this.grid[entity.location.y][entity.location.x] = null;
     this.entities.splice(this.entities.indexOf(entity), 1);
 }
@@ -492,3 +506,10 @@ Game.prototype.spawnMob = function(level) {
     }
 }
 
+Game.prototype.countEnemiesOfLevel = function(level) {
+    var n = 0;
+    for (var i = 0; i < this.entities.length; i++)
+        if (this.entities[i].level === level) n++
+
+    return n;
+}
