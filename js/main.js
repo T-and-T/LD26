@@ -1,16 +1,20 @@
-var game;
 window.onload = function() {
-    game = new Game("game", 640, 480, 10, 10);
+
+    var game = newGame();
+
+    game.start();
 
     game.onUpdate(function() {
         if (game.state === game.stateEnum.STARTSCREEN && game.mouseWasClicked()) {
             game.state = game.stateEnum.INTRO;
             game.introTime = 0;
+        } else if (game.state === game.stateEnum.OVER && game.mouseWasClicked()) {
+            window.location.reload(false);
         } else if (game.state === game.stateEnum.PLAY) {
             var chance_per_level = [ // measured in 10 percents
                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // won't ever be at this level
-                [8, 7, 6, 5, 4, 3, 2, 1, 0, 0],
-                [7, 8, 7, 6, 5, 4, 3, 2, 1, 0],
+                [15, 10, 5, 3, 2, 1, 0, 0, 0, 0],
+                [10, 8, 7, 6, 5, 4, 3, 2, 1, 0],
                 [6, 7, 8, 7, 6, 5, 4, 3, 2, 1],
                 [5, 6, 7, 8, 7, 6, 5, 4, 3, 2],
                 [4, 5, 6, 7, 8, 7, 6, 5, 4, 3],
@@ -19,7 +23,7 @@ window.onload = function() {
                 [1, 2, 3, 4, 5, 6, 7, 8, 7, 6],
                 [0, 1, 2, 3, 4, 5, 6, 7, 8, 7],
             ];
-            var enemies_per_level = [0, 5, 5, 6, 6, 7, 7, 8, 9, 10];
+            var enemies_per_level = [0, 8, 9, 10, 11, 12, 14, 16, 18, 22];
 
             // the current enemies, sorted by level
             var current_enemies = [];
@@ -46,6 +50,8 @@ window.onload = function() {
             }
         }
         document.getElementById("score").innerHTML = game.score;
+        document.getElementById("lives").innerHTML = game.lives;
+        document.getElementById("level").innerHTML = player.level + 1;
     });
 
     game.onCollide(function(entity1, entity2, location) {
@@ -69,14 +75,18 @@ window.onload = function() {
 	    entity1.location = location;
 	}
     });
+    var player;
+    function newGame() {
+        var game = new Game("game", 640, 480, 10, 10);
 
-    /*var */player = new PlayerEntity();
-    game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
-    game.player = player;
+        player = new PlayerEntity();
+        game.addEntity(player, {x: bin1_2(game.cols - 1), y: bin1_2(game.rows - 1)});
+        game.player = player;
    
-    game.spawnMob(0);
-    game.spawnMob(1);
-    game.spawnMob(2);
+        game.spawnMob(0);
+        game.spawnMob(1);
+        game.spawnMob(2);
 
-    game.start();
+        return game
+    }
 };

@@ -2,17 +2,40 @@
 <html>
     <head>
         <title>Mondrian Madness</title>
-	    <script type="text/javascript" src="js/math_utils.js"></script>
+	<script type="text/javascript" src="js/math_utils.js"></script>
         <script type="text/javascript" src="js/game.js"></script>
         <script type="text/javascript" src="js/entity.js"></script>
         <script type="text/javascript" src="js/playerentity.js"></script>
         <script type="text/javascript" src="js/aientity.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
+        <style type="text/css">
+            #main
+            {
+                width: 640px;
+                margin: 0 auto;
+            }
+            #levels
+            {
+                width: 80px;
+                float: right;
+            }
+            #info
+            {
+                 font-size: 1.2em;
+            }
+        </style>
     </head>
     <body>
-        <div id="game">Hi. How are you.</div>
-        <div id="info">
-            <div id="scoreInfo">Score: <span id="score">0</span></div>
+        <div id="levels">
+            <img src="images/levels.png"/>
+        </div>
+        <div id="main">
+            <div id="game">Hi. How are you.</div>
+            <div id="info">
+                <span id="scoreInfo">Score: <span id="score">0</span></span>&nbsp;&nbsp;&nbsp;
+                <span id="lifeInfo">Lives: <span id="lives">0</span></span>&nbsp;&nbsp;&nbsp;
+                <span id="levelInfo">Level: <span id="level">0</span></span>
+            </div>
         </div>
     </body>
 </html>

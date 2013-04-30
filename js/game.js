@@ -1,6 +1,7 @@
 function Game(id, width, height, rows, cols) {
     var placeholder = document.getElementById(id);
     this.canvas = document.createElement("canvas");
+    this.canvas.id = id;
     this.canvas.width = this.width = width;
     this.canvas.height = this.height = height;
     placeholder.parentNode.replaceChild(this.canvas, placeholder);
@@ -19,6 +20,7 @@ function Game(id, width, height, rows, cols) {
     /// Images
 
     this.startscreen = null;
+    this.gameover = null;
 
     this.updateHandlers = [];
     this.collide = function(){};
@@ -77,6 +79,7 @@ Game.prototype.loadImage = function(filename) {
 
 Game.prototype.load = function() {
     this.startscreen = this.loadImage("images/splash.png");
+    this.gameover = this.loadImage("images/gameover.png");
 }
 
 Game.prototype.update = function() {
@@ -240,6 +243,7 @@ Game.prototype.introRender = function() {
 Game.prototype.inPlayRender = function() {
     
     var moving_entity_queue = [];
+    var player = false;
     
     for (var i = 0; i < this.grid.length; i++) {
         for (var j = 0; j < this.grid[0].length; j++) {
@@ -252,6 +256,9 @@ Game.prototype.inPlayRender = function() {
                     var w = (this.width / this.cols);
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
+                    if (Object.is(ent, this.player)) {
+                        player = ent;
+                    }
                     this.ctx.restore();
                 } else {
                     moving_entity_queue.push(ent);
@@ -339,6 +346,7 @@ Game.prototype.inPlayRender = function() {
 
         this.ctx.restore();
     }
+
 }
 
 Game.prototype.render = function() {
@@ -359,7 +367,7 @@ Game.prototype.render = function() {
             this.inPlayRender();
             break;
         case this.stateEnum.OVER:
-            // show over screen, "Do you want to play again?"
+            this.ctx.drawImage(this.gameover, 0, 0);
             break;
     }
 

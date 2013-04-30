@@ -48,7 +48,7 @@ PlayerEntity.prototype.getColor = function() {
     // increase saturation
     var hsv = RGBtoHSV(clr);
 
-    hsv.s = 1;
+    hsv.s *= 0.8;
     hsv.v = 1;
 
     clr = HSVtoRGB(hsv);

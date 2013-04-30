@@ -43,5 +43,5 @@ Entity.prototype.levelUp = function() {
 }
 
 Entity.prototype.getTime = function() {
-    return (this.level+1) * 25;
+    return (this.level+1) * 20;
 }
