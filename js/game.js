@@ -100,7 +100,7 @@ Game.prototype.update = function() {
             for (var i = 0; i < this.entities.length; i++) {
                 var ent = this.entities[i];
                 if (ent.moving == -1) {
-		    if (!Object.is(ent, this.player))
+		    if (ent !== this.player)
 			console.log(i);
                     ent.update();
                 } else if (ent.timeMoved < ent.getTime()) {
@@ -256,7 +256,7 @@ Game.prototype.inPlayRender = function() {
                     var w = (this.width / this.cols);
                     var h = (this.height / this.rows);
                     this.ctx.fillRect(ent.location.x * w, ent.location.y * h, w, h);
-                    if (Object.is(ent, this.player)) {
+                    if (ent == this.player) {
                         player = ent;
                     }
                     this.ctx.restore();

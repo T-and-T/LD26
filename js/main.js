@@ -61,14 +61,14 @@ window.onload = function() {
          * the other entity into its space
          */
 	if (entity1.level < entity2.level || (entity1.level == entity2.level && Math.random() <= 0.5)) {
-	    if (Object.is(entity2, game.player) || Object.is(entity1, game.player))
+	    if (entity2 === game.player || entity1 === game.player)
 		entity1.die();
 	    else
 		game.removeEntity(entity1);
 	    entity2.location = location;
 	}
 	else { // if entity1 has the higher level, or they're equal and the coin-flip went the other way
-	    if (Object.is(entity1, game.player) || Object.is(entity2, game.player))
+	    if (entity1 === game.player || entity2 === game.player)
 		entity2.die()
 	    else
 		game.removeEntity(entity2);
